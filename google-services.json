@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1010177844551",
+    "project_id": "camera-3c9fd",
+    "storage_bucket": "camera-3c9fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010177844551:android:a676357ff9c23ad2d81862",
+        "android_client_info": {
+          "package_name": "com.ngochuy.cameraAI"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDINOcCPggOaVeKapGgps5Gb_fvBMft0FU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

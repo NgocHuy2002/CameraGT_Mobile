@@ -1,0 +1,73 @@
+{
+  "name": "CameraAI_Mobile",
+  "displayName": "CameraAI",
+  "expo": {
+    "name": "CameraAI",
+    "slug": "CameraAI_Mobile",
+    "version": "1.0.2",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "bundleIdentifier": "com.ngochuy.cameraAI",
+      "buildNumber": "2",
+      "icon": "./assets/icon.png",
+      "supportsTablet": true,
+      "requireFullScreen": true,
+      "usesIcloudStorage": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Cho phép $(PRODUCT_NAME) truy cập camera để thêm ảnh chụp sản phẩm",
+        "NSPhotoLibraryUsageDescription": "Cho phép $(PRODUCT_NAME) truy cập thư viện ảnh để thêm ảnh sản phẩm"
+      }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ],
+      ["expo-image-picker"],
+      ["expo-localization"],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff",
+          "mode": "production"
+        }
+      ]
+    ],
+    "android": {
+      "icon": "./assets/icon.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundImage": "./assets/app-icon-android-adaptive-background.png"
+      },
+      "permissions": [
+        "CAMERA",
+        "NOTIFICATIONS",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "package": "com.ngochuy.cameraAI",
+      "googleServicesFile": "./google-services.json"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "285b11b1-253c-4791-ae6c-9d155bdbffde"
+      }
+    }
+  }
+}
