@@ -69,11 +69,11 @@ export default function MenuScreen({ navigation }) {
     />
   );
   // ------------ useEffect -------------
-  useFocusEffect(
-    React.useCallback(() => {
-      handleGetUserInfo();
-    }, []),
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     handleGetUserInfo();
+  //   }, []),
+  // );
   // ------------------------------------
   //   ---------- Action ----------------
   const handleGetUserInfo = async () => {

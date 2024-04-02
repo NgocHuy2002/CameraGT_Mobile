@@ -25,8 +25,10 @@ import NotifitionIcon from '../../assets/icons/notification.svg';
 import PhoneCallOutlineIcon from '../../assets/icons/phone-call-outline.svg';
 import PhoneCallIcon from '../../assets/icons/phone-call.svg';
 import PillIcon from '../../assets/icons/pill.svg';
+import QRIcon from '../../assets/icons/qrcode.svg';
 import RecordsIcon from '../../assets/icons/records.svg';
 import SalineIcon from '../../assets/icons/saline.svg';
+import ScanIcon from '../../assets/icons/scan.svg';
 import SearchIcon from '../../assets/icons/search.svg';
 import StatisticsIcon from '../../assets/icons/statistics.svg';
 
@@ -65,6 +67,8 @@ const AppIconsPack = {
     doctor: SvgProvider(DoctorIcon),
     event: SvgProvider(EventIcon),
     eye: SvgProvider(EyeIcon),
+    qr: SvgProvider(QRIcon),
+    scan: SvgProvider(ScanIcon),
     map: SvgProvider(MapIcon),
     'eye-close': SvgProvider(EyeCloseIcon),
     help: SvgProvider(HelpIcon),

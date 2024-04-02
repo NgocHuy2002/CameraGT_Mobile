@@ -53,7 +53,7 @@ const MainTabBar = () => {
       <BottomTab.Screen
         name={ROUTER.HOME}
         options={{
-          tabBarLabel: 'Trang chủ',
+          tabBarLabel: 'HOME',
           tabBarIcon: (iconProps) => (
             <Icon
               {...iconProps}
@@ -69,12 +69,12 @@ const MainTabBar = () => {
       <BottomTab.Screen
         name={ROUTER.RESOURCES}
         options={{
-          tabBarLabel: 'Tài nguyên',
+          tabBarLabel: 'RECORD',
           tabBarIcon: (iconProps) => (
             <Icon
               {...iconProps}
               pack="app"
-              name="database"
+              name="records"
               width={18}
               height={18}
             />
@@ -85,14 +85,20 @@ const MainTabBar = () => {
       <BottomTab.Screen
         name={ROUTER.MAP}
         options={{
-          tabBarLabel: 'Bản đồ',
+          tabBarLabel: 'NOTIFICATION',
           tabBarIcon: (iconProps) => (
-            <Icon {...iconProps} pack="app" name="map" width={18} height={18} />
+            <Icon
+              {...iconProps}
+              pack="app"
+              name="notifition"
+              width={18}
+              height={18}
+            />
           ),
         }}
         component={MapScreen}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name={ROUTER.POSTS}
         options={{
           tabBarLabel: 'Bài viết',
@@ -107,7 +113,7 @@ const MainTabBar = () => {
           ),
         }}
         component={PostsScreen}
-      />
+      />*/}
       <BottomTab.Screen
         name={ROUTER.MENU}
         options={{

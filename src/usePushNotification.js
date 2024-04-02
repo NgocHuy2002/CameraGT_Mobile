@@ -7,7 +7,7 @@ Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: false,
-    shouldSetBadge: false,
+    shouldSetBadge: true,
   }),
 });
 
@@ -112,7 +112,7 @@ async function registerForPushNotificationsAsync() {
     // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
     token = (
       await Notifications.getExpoPushTokenAsync({
-        projectId: '285b11b1-253c-4791-ae6c-9d155bdbffde', // Project id
+        projectId: 'c8ea2c82-202b-4f90-bc42-33afb9b351e5', // Project id
       })
     ).data;
     console.log(token);
