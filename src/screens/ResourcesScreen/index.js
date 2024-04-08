@@ -7,6 +7,8 @@ import {
   Text,
 } from '@ui-kitten/components';
 import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ResizeMode, Video } from 'expo-av';
 import {
   Dimensions,
   FlatList,
@@ -18,8 +20,24 @@ import {
 import Container from '@components/Container/Container';
 import Content from '@components/Content/Content';
 import Header from '@components/Header/Header';
+import { requestGetRecords } from '@services/RecordService/RecordService';
 
 export const ResourcesScreen = ({ route, navigation }) => {
+  // 
+  // State variables
+  //
+
+  const [records, setRecords] = useState([]);
+  useEffect(() => {
+    handleRecord();
+  }, []);
+  const handleRecord = async () => {
+    const username = await AsyncStorage.getItem('USERUSERNAMEKEY');
+    const data = await requestGetRecords(username);
+    if (data) {
+      setRecords(data);
+    }
+  };
   return (
     <Container>
       <Header
@@ -29,35 +47,32 @@ export const ResourcesScreen = ({ route, navigation }) => {
         title="Danh sách bản ghi"
         hideLeftIcon={false}
       />
-      <Content scrollEnabled={false} safeAreaEnabled={false}>
-        <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
-          <Card
-            style={{
-              width: Dimensions.get('screen').width * 0.5 - 20,
-              height: 150,
-              margin: 10,
-            }}
-          >
-            <Text>Bản ghi 1</Text>
-          </Card>
-          <Card
-            style={{
-              width: Dimensions.get('screen').width * 0.5 - 20,
-              height: 150,
-              margin: 10,
-            }}
-          >
-            <Text>Bản ghi 2</Text>
-          </Card>
-          <Card
-            style={{
-              width: Dimensions.get('screen').width * 0.5 - 20,
-              height: 150,
-              margin: 10,
-            }}
-          >
-            <Text>Bản ghi 3</Text>
-          </Card>
+      <Content scrollEnabled={true} safeAreaEnabled={false}>
+        <View style={{ flex: 1, flexDirection: 'column', gap:20}}>
+        {records.map((item, index) => (
+            <Card
+              key={`card_${index}`}
+              style={{
+                width: Dimensions.get('screen').width * 1 - 20,
+                height: 300,
+                margin: 10,
+              }}
+            >
+              <Video source={{
+                    uri: item.url,
+                  }}
+                  style ={{
+                    height: 300,
+                    width: "100%"
+                  }}
+                  useNativeControls
+                  resizeMode={ResizeMode.CONTAIN}
+                  isLooping
+                  shouldPlay={true}>
+              </Video>
+              <Text>{item.created_at}</Text>
+            </Card>
+          ))}
         </View>
       </Content>
     </Container>

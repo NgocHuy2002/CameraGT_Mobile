@@ -32,7 +32,7 @@
     "ahooks": "^2.4.0",
     "axios": "^0.27.2",
     "deprecated-react-native-prop-types": "^5.0.0",
-    "expo": "^50.0.8",
+    "expo": "^50.0.14",
     "expo-application": "~5.8.3",
     "expo-av": "~13.10.5",
     "expo-barcode-scanner": "~12.9.3",

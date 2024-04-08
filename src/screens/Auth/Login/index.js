@@ -130,11 +130,11 @@ export default function LoginScreen({ navigation }) {
   // ---------- Action ------------
   const onFormSubmit = async (values) => {
     values = {
-      grant_type: 'password',
+      // grant_type: 'password',
       username: values.username,
       password: values.password, //'9876543A@a'
-      client_id: 'vilis-mobile-client',
-      client_secret: 'n)3b^Q7g]Jd6T&$^',
+      // client_id: 'vilis-mobile-client',
+      // client_secret: 'n)3b^Q7g]Jd6T&$^',
     };
     if (checked) {
       rememberUser(values);

@@ -7,16 +7,17 @@ import { formatString } from '@helpers/formatString';
 import request from '@services/request';
 
 export function requestLogin(data) {
-  var formBody = [];
-  for (var property in data) {
-    var encodedKey = encodeURIComponent(property);
-    var encodedValue = encodeURIComponent(data[property]);
-    formBody.push(encodedKey + '=' + encodedValue);
-  }
-  formBody = formBody.join('&');
-  const myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-  return axios.post(API.LOGIN, formBody, myHeaders).then((response) => {
+  // var formBody = [];
+  // for (var property in data) {
+  //   var encodedKey = encodeURIComponent(property);
+  //   var encodedValue = encodeURIComponent(data[property]);
+  //   formBody.push(encodedKey + '=' + encodedValue);
+  // }
+  // formBody = formBody.join('&');
+  // const myHeaders = new Headers();
+  // myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+  // return axios.post(API.LOGIN, formBody, myHeaders).then((response) => {
+  return axios.post(API.LOGIN, data).then((response) => {
     if (response?.data) {
       return response.data.access_token;
     }

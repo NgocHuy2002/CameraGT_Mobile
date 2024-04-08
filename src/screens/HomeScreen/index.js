@@ -32,7 +32,7 @@ export const HomeScreen = ({ navigation }) => {
   const [copiedText, setCopiedText] = useState('');
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
-  const link = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+  const link = 'http://192.168.0.101:5000/api/live/admin/65e96876839efe57c3b0d812';
   const [listStream, setListStream] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const actions = [
@@ -117,11 +117,14 @@ export const HomeScreen = ({ navigation }) => {
                   shouldPlay={true}
                   onPlaybackStatusUpdate={(status) => setStatus(() => status)}
                 />
+                {/* <Image source={{
+                  uri: link,
+                }} style={{ height: 300, width: Dimensions.get('screen').width * 1 - 20 }} /> */}
               </View>
             );
           })
         )}
-        {/* <View style={styles.buttons}>
+        <View style={styles.buttons}>
           <Button
             onPress={() =>
               status.isPlaying
@@ -131,7 +134,7 @@ export const HomeScreen = ({ navigation }) => {
           >
             {status.isPlaying ? 'Pause' : 'Play'}
           </Button>
-        </View> */}
+        </View>
         <FloatingAction
           actions={actions}
           onPressItem={(name) => {

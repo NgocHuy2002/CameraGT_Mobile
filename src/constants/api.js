@@ -3,7 +3,8 @@ export const API_URL_34 = 'http://10.168.4.231:5034';
 // export const SOCKET_URL = 'wss://truysuat.thinklabs.com.vn';
 
 export const API = {
-  LOGIN: 'http://10.168.4.231:5035/connect/token',
+  LOGIN: 'http://192.168.0.101:5000/api/login',
+  RECORD: 'http://192.168.0.101:5000/api/load_records?username={0}',
   LOGOUT: 'http://10.168.4.231:5035/connect/endsession',
   REGISTER: 'http://10.168.4.231:5034/api/user-mobile/register',
   CHANGE_PASSWORD: 'http://10.168.4.231:5034/api/user-mobile/change-password',
