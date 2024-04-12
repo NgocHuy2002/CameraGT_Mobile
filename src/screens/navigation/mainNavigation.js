@@ -28,6 +28,7 @@ import { GuideScreen } from '@containers/GuideScreen';
 import GuideDetail from '@containers/GuideScreen/GuideDetail';
 // import { selectUnreadNotification } from '@containers/Notification/saga/selectors';
 import { HomeScreen } from '@containers/HomeScreen';
+import { DetailStream } from '@containers/HomeScreen/DetailStream/DetailStream';
 import { MapScreen } from '@containers/MapScreen';
 import MenuScreen from '@containers/MenuScreen';
 import { PostsScreen } from '@containers/PostsScreen';
@@ -180,6 +181,7 @@ export default function MainNavigator() {
       <Stack.Screen name={ROUTER.MAIN} component={MainTabBar} />
       <Stack.Screen name={ROUTER.HOME} component={HomeScreen} />
       <Stack.Screen name={ROUTER.FIELD} component={Field} />
+      <Stack.Screen name={ROUTER.STREAM} component={DetailStream} />
       <Stack.Screen
         name={ROUTER.POSTS_BY_CATEGORY}
         component={PostByCategory}

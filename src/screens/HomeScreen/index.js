@@ -1,5 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native';
-import { Button, Card, Icon, Input, Modal, Text } from '@ui-kitten/components';
+import {
+  Button,
+  Card,
+  CheckBox,
+  Icon,
+  Input,
+  Modal,
+  Text,
+} from '@ui-kitten/components';
 import { ResizeMode, Video } from 'expo-av';
 import * as Clipboard from 'expo-clipboard';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +17,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -26,20 +35,26 @@ import Content from '@components/Content/Content';
 import Header from '@components/Header/Header';
 import { Column } from '@components/Stack';
 
+import { ROUTER } from '@constants/router';
+
+import Toast from '@modules/Toast/Toast';
+
 import { socket } from '@services/socket.io';
 
 const { SlideInMenu } = renderers;
-const SERVER_URL = 'http://192.168.0.10:3000';
 export const HomeScreen = ({ navigation }) => {
   const { expoPushToken } = usePushNotification();
   const [copiedText, setCopiedText] = useState('');
-  const [isConnected, setIsConnected] = useState(false);
-  const [transport, setTransport] = useState('N/A');
+  const [RTSP, setRTSP] = useState('');
+  const [userNameCam, setUsernameCam] = useState('');
+  const [passwordCam, setPasswordCam] = useState('');
+  const [domainCam, setDomainCam] = useState('');
+  const [checked, setChecked] = useState(false);
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const link =
     'http://192.168.0.101:5000/api/live/admin/65e96876839efe57c3b0d812';
-  const [listStream, setListStream] = useState([]);
+  const [listStream, setListStream] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const actions = [
     {
@@ -59,33 +74,6 @@ export const HomeScreen = ({ navigation }) => {
   ];
   // ------- ----- --------------------
   // ---------- useEffect --------------
-  useEffect(() => {
-    if (socket.connected) {
-      onConnect();
-    }
-
-    function onConnect() {
-      setIsConnected(true);
-      setTransport(socket.io.engine.transport.name);
-
-      socket.io.engine.on('upgrade', (transport) => {
-        setTransport(transport.name);
-      });
-    }
-
-    function onDisconnect() {
-      setIsConnected(false);
-      setTransport('N/A');
-    }
-
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-
-    return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-    };
-  }, []);
   // ------------------------------------
   // --------------- Action --------------
   const copyToClipboard = async () => {
@@ -96,8 +84,19 @@ export const HomeScreen = ({ navigation }) => {
     const text = await Clipboard.getStringAsync();
     setCopiedText(text);
   };
-  const addStream = (value) => {
-    setListStream([...listStream, value]);
+
+  const handleAddStream = async () => {
+    // API add stream sử dụng RTSP hoặc UsernameCamera + PasswordCamera + DomainCamera
+    // return data or mess
+  };
+
+  const addStream = async () => {
+    // setListStream([...listStream, value]);
+    await handleAddStream();
+    console.log(userNameCam + passwordCam + domainCam);
+    setListStream(listStream + 1);
+    setIsOpen(false);
+    Toast.showText('Thêm stream thành công');
   };
   // ------------------------------------
   return (
@@ -113,62 +112,18 @@ export const HomeScreen = ({ navigation }) => {
         {/* <Text>Your expo token: {expoPushToken}</Text> */}
         {/* <Button onPress={copyToClipboard}>Copy</Button>
         <Input /> */}
-        {listStream.length < 1 ? (
-          <View style={styles.blankView}>
-            <Icon
-              style={styles.Icon}
-              name={'plus-circle-outline'}
-              width={50}
-              height={50}
-              fill={'white'}
-            />
-          </View>
-        ) : (
-          listStream.map((link, index) => {
-            return (
-              <View key={index}>
-                <Text
-                  style={{
-                    paddingHorizontal: 20,
-                    marginTop: 5,
-                    fontSize: 20,
-                    fontWeight: '800',
-                  }}
-                >
-                  Camera {index + 1}
-                </Text>
-                <Video
-                  ref={video}
-                  style={styles.video}
-                  source={{
-                    uri: link,
-                  }}
-                  useNativeControls
-                  resizeMode={ResizeMode.CONTAIN}
-                  isLooping
-                  shouldPlay={true}
-                  onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-                />
-                {/* <Image source={{
-                  uri: link,
-                }} style={{ height: 300, width: Dimensions.get('screen').width * 1 - 20 }} /> */}
-              </View>
-            );
-          })
-        )}
-        {/* <View style={styles.buttons}>
-          <Button
-            onPress={() =>
-              status.isPlaying
-                ? video.current.pauseAsync()
-                : video.current.playAsync()
-            }
+        {[...Array(listStream)].map((_, index) => (
+          <Pressable
+            key={index}
+            onPress={() => navigation.navigate(ROUTER.STREAM)}
           >
-            {status.isPlaying ? 'Pause' : 'Play'}
-          </Button>
-        </View> */}
-        <Text>Status: {isConnected ? 'connected' : 'disconnected'}</Text>
-        <Text>Transport: {transport}</Text>
+            <View style={styles.blankView}>
+              <Text
+                style={{ color: 'white', fontSize: 16 }}
+              >{`Stream Camera ${index + 1}`}</Text>
+            </View>
+          </Pressable>
+        ))}
         <FloatingAction
           actions={actions}
           onPressItem={(name) => {
@@ -182,13 +137,47 @@ export const HomeScreen = ({ navigation }) => {
         >
           <Card
             style={{
-              height: Dimensions.get('screen').height * 0.3,
+              height: Dimensions.get('screen').height * 0.5,
               width: Dimensions.get('screen').width - 20,
             }}
           >
             <Column space={4}>
-              <Input placeholder="Nhập link rtsp" label="RTSP" value={link} />
-              <Button onPress={() => addStream(link)}>Thêm</Button>
+              {checked ? (
+                <Input
+                  placeholder="Nhập link rtsp"
+                  key={'RTSP'}
+                  label="RTSP"
+                  onChangeText={(nextValue) => setRTSP(nextValue)}
+                />
+              ) : (
+                <>
+                  <Input
+                    placeholder="Nhập username camera"
+                    label="Username"
+                    key={'Username'}
+                    onChangeText={(nextValue) => setUsernameCam(nextValue)}
+                  />
+                  <Input
+                    placeholder="Nhập password camera"
+                    key={'Password'}
+                    label="Password"
+                    onChangeText={(nextValue) => setPasswordCam(nextValue)}
+                  />
+                  <Input
+                    placeholder="Nhập domain camera"
+                    key={'Domain'}
+                    label="Domain"
+                    onChangeText={(nextValue) => setDomainCam(nextValue)}
+                  />
+                </>
+              )}
+              <CheckBox
+                checked={checked}
+                onChange={(nextChecked) => setChecked(nextChecked)}
+              >
+                Nhập link rtsp
+              </CheckBox>
+              <Button onPress={() => addStream()}>Thêm</Button>
             </Column>
           </Card>
         </Modal>
@@ -216,6 +205,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     alignSelf: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     width: 320,
     height: 200,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
