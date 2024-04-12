@@ -108,7 +108,7 @@ export default function LoginScreen({ navigation }) {
             Đăng nhập
           </Button>
           <Button
-            onPress={() => navigation.navigate(ROUTER.REGISTER)}
+            onPress={() => navigation.navigate(ROUTER.CHANGE_PASSWORD)}
             appearance="ghost"
           >
             Đăng ký tài khoản

@@ -18,6 +18,7 @@ import {
 import { FloatingAction } from 'react-native-floating-action';
 // import Menu, { MenuDivider, MenuItem } from "react-native-material-menu";
 import { renderers } from 'react-native-popup-menu';
+import io from 'socket.io-client';
 import usePushNotification from 'src/usePushNotification';
 
 import Container from '@components/Container/Container';
@@ -25,14 +26,19 @@ import Content from '@components/Content/Content';
 import Header from '@components/Header/Header';
 import { Column } from '@components/Stack';
 
-const { SlideInMenu } = renderers;
+import { socket } from '@services/socket.io';
 
+const { SlideInMenu } = renderers;
+const SERVER_URL = 'http://192.168.0.10:3000';
 export const HomeScreen = ({ navigation }) => {
   const { expoPushToken } = usePushNotification();
   const [copiedText, setCopiedText] = useState('');
+  const [isConnected, setIsConnected] = useState(false);
+  const [transport, setTransport] = useState('N/A');
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
-  const link = 'http://192.168.0.101:5000/api/live/admin/65e96876839efe57c3b0d812';
+  const link =
+    'http://192.168.0.101:5000/api/live/admin/65e96876839efe57c3b0d812';
   const [listStream, setListStream] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const actions = [
@@ -53,7 +59,33 @@ export const HomeScreen = ({ navigation }) => {
   ];
   // ------- ----- --------------------
   // ---------- useEffect --------------
+  useEffect(() => {
+    if (socket.connected) {
+      onConnect();
+    }
 
+    function onConnect() {
+      setIsConnected(true);
+      setTransport(socket.io.engine.transport.name);
+
+      socket.io.engine.on('upgrade', (transport) => {
+        setTransport(transport.name);
+      });
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+      setTransport('N/A');
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
+  }, []);
   // ------------------------------------
   // --------------- Action --------------
   const copyToClipboard = async () => {
@@ -124,7 +156,7 @@ export const HomeScreen = ({ navigation }) => {
             );
           })
         )}
-        <View style={styles.buttons}>
+        {/* <View style={styles.buttons}>
           <Button
             onPress={() =>
               status.isPlaying
@@ -134,7 +166,9 @@ export const HomeScreen = ({ navigation }) => {
           >
             {status.isPlaying ? 'Pause' : 'Play'}
           </Button>
-        </View>
+        </View> */}
+        <Text>Status: {isConnected ? 'connected' : 'disconnected'}</Text>
+        <Text>Transport: {transport}</Text>
         <FloatingAction
           actions={actions}
           onPressItem={(name) => {

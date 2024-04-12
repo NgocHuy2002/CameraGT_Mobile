@@ -35,8 +35,8 @@ const Stack = createStackNavigator();
 function MyStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name={ROUTER.APP_LOADER} component={AppLoaderScreen} />
-      <Stack.Screen name={ROUTER.AUTH_NAVIGATOR} component={AuthNavigator} />
+      {/* <Stack.Screen name={ROUTER.APP_LOADER} component={AppLoaderScreen} /> */}
+      {/* <Stack.Screen name={ROUTER.AUTH_NAVIGATOR} component={AuthNavigator} /> */}
       <Stack.Screen name={ROUTER.MAIN_NAVIGATOR} component={MainNavigator} />
       {/* <Stack.Screen name={ROUTER.LOGIN} component={LoginScreen} />
             <Stack.Screen name={ROUTER.HOME} component={HomeScreen} /> */}
