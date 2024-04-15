@@ -56,7 +56,7 @@ export const HomeScreen = ({ navigation }) => {
   const [status, setStatus] = React.useState({});
   const link =
     'http://192.168.0.101:5000/api/live/admin/65e96876839efe57c3b0d812';
-  const [listStream, setListStream] = useState({});
+  const [listStream, setListStream] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const actions = [
     {
@@ -92,6 +92,7 @@ export const HomeScreen = ({ navigation }) => {
     // return data or mess
     const username = await AsyncStorage.getItem('USERUSERNAMEKEY');
     const data = {
+      expo_token: expoPushToken,
       name: userNameCam,
       username: userNameCam,
       password: passwordCam,
@@ -102,7 +103,7 @@ export const HomeScreen = ({ navigation }) => {
       .post(`http://192.168.0.101:5000/${username}/addcamera`, data)
       .then((res) => {
         if (res.data) {
-          setListStream(...listStream, { id: res.data.id });
+          setListStream((prevData) => [...prevData, { id: res.data.id }]);
         }
       });
   };
