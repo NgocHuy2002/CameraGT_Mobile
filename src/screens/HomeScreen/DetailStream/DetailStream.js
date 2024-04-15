@@ -1,49 +1,35 @@
 import { Text } from '@ui-kitten/components';
+import { ResizeMode, Video } from 'expo-av';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, View } from 'react-native';
 
 import Container from '@components/Container/Container';
 import Content from '@components/Content/Content';
 
+import request from '@services/request';
 import { socket } from '@services/socket.io';
 
-export const DetailStream = () => {
+export const DetailStream = ({ navigation, route }) => {
+  const { id_camera } = route.params;
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState('N/A');
 
   // ---------- useEffect --------------
   useEffect(() => {
-    if (socket.connected) {
-      onConnect();
-    }
-
-    function onConnect() {
-      setIsConnected(true);
-      setTransport(socket.io.engine.transport.name);
-
-      socket.io.engine.on('upgrade', (transport) => {
-        setTransport(transport.name);
-      });
-    }
-
-    function onDisconnect() {
-      setIsConnected(false);
-      setTransport('N/A');
-    }
-
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-
-    return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-    };
+    handleActiveStream();
   }, []);
+  // ------------------------------------
+  // --------- Action -------------------
+  const handleActiveStream = async () => {
+    await request
+      .get(`http://192.168.0.101:5000/api/live/admin/${id_camera}.mp4`)
+      .catch((err) => console.log(err));
+  };
   // ------------------------------------
   return (
     <Container>
       <Content>
-        <Image
+        <Video
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             width: Dimensions.get('screen').width,
@@ -51,9 +37,12 @@ export const DetailStream = () => {
             resizeMode: 'contain',
             padding: 10,
           }}
+          source={{
+            uri: `http://192.168.0.101:5000/api/live/admin/${id_camera}/stream.m3u8`,
+          }}
+          useNativeControls
+          resizeMode={ResizeMode.CONTAIN}
         />
-        <Text>Status: {isConnected ? 'connected' : 'disconnected'}</Text>
-        <Text>Transport: {transport}</Text>
       </Content>
     </Container>
   );

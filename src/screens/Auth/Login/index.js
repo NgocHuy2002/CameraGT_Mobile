@@ -160,7 +160,7 @@ export default function LoginScreen({ navigation }) {
         // We have username!!
         setUserName(username);
         setPass(password);
-        setChecked(JSON.parse(isChecked));
+        setChecked(isChecked);
       }
     } catch (error) {
       // Error retrieving data

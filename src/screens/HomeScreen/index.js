@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import {
   Button,
@@ -39,6 +40,7 @@ import { ROUTER } from '@constants/router';
 
 import Toast from '@modules/Toast/Toast';
 
+import request from '@services/request';
 import { socket } from '@services/socket.io';
 
 const { SlideInMenu } = renderers;
@@ -54,7 +56,7 @@ export const HomeScreen = ({ navigation }) => {
   const [status, setStatus] = React.useState({});
   const link =
     'http://192.168.0.101:5000/api/live/admin/65e96876839efe57c3b0d812';
-  const [listStream, setListStream] = useState(0);
+  const [listStream, setListStream] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const actions = [
     {
@@ -88,6 +90,21 @@ export const HomeScreen = ({ navigation }) => {
   const handleAddStream = async () => {
     // API add stream sử dụng RTSP hoặc UsernameCamera + PasswordCamera + DomainCamera
     // return data or mess
+    const username = await AsyncStorage.getItem('USERUSERNAMEKEY');
+    const data = {
+      name: userNameCam,
+      username: userNameCam,
+      password: passwordCam,
+      ip: domainCam,
+      [RTSP.length > 1 ? rtsp_url : null]: RTSP,
+    };
+    request
+      .post(`http://192.168.0.101:5000/${username}/addcamera`, data)
+      .then((res) => {
+        if (res.data) {
+          setListStream(...listStream, { id: res.data.id });
+        }
+      });
   };
 
   const addStream = async () => {
@@ -96,7 +113,14 @@ export const HomeScreen = ({ navigation }) => {
     console.log(userNameCam + passwordCam + domainCam);
     setListStream(listStream + 1);
     setIsOpen(false);
+    clearInput();
     Toast.showText('Thêm stream thành công');
+  };
+  const clearInput = () => {
+    setUsernameCam('');
+    setPasswordCam('');
+    setDomainCam('');
+    setRTSP('');
   };
   // ------------------------------------
   return (
@@ -112,10 +136,12 @@ export const HomeScreen = ({ navigation }) => {
         {/* <Text>Your expo token: {expoPushToken}</Text> */}
         {/* <Button onPress={copyToClipboard}>Copy</Button>
         <Input /> */}
-        {[...Array(listStream)].map((_, index) => (
+        {listStream.map((item, index) => (
           <Pressable
             key={index}
-            onPress={() => navigation.navigate(ROUTER.STREAM)}
+            onPress={() =>
+              navigation.navigate(ROUTER.STREAM, { id_camera: item.id })
+            }
           >
             <View style={styles.blankView}>
               <Text

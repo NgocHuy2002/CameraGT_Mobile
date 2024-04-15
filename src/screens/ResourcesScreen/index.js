@@ -28,7 +28,31 @@ export const ResourcesScreen = ({ route, navigation }) => {
   //
   // State variables
   //
-
+  const renderItem = (item, index) => (
+    <Card
+      key={`card_${index}`}
+      style={{
+        width: Dimensions.get('screen').width * 1 - 20,
+        height: 300,
+        margin: 10,
+      }}
+    >
+      <Video
+        source={{
+          uri: item.url,
+        }}
+        style={{
+          height: 300,
+          width: '100%',
+        }}
+        useNativeControls
+        resizeMode={ResizeMode.CONTAIN}
+        isLooping
+        shouldPlay={false}
+      ></Video>
+      <Text>{item.created_at}</Text>
+    </Card>
+  );
   const [records, setRecords] = useState([]);
   // useEffect(() => {
   //   handleRecord();
@@ -56,31 +80,10 @@ export const ResourcesScreen = ({ route, navigation }) => {
       />
       <Content scrollEnabled={true} safeAreaEnabled={false}>
         <View style={{ flex: 1, flexDirection: 'column', gap: 20 }}>
-          {records.map((item, index) => (
-            <Card
-              key={`card_${index}`}
-              style={{
-                width: Dimensions.get('screen').width * 1 - 20,
-                height: 300,
-                margin: 10,
-              }}
-            >
-              <Video
-                source={{
-                  uri: item.url,
-                }}
-                style={{
-                  height: 300,
-                  width: '100%',
-                }}
-                useNativeControls
-                resizeMode={ResizeMode.CONTAIN}
-                isLooping
-                shouldPlay={true}
-              ></Video>
-              <Text>{item.created_at}</Text>
-            </Card>
-          ))}
+          {/* {records.map((item, index) => (
+
+          ))} */}
+          <FlatList data={records} renderItem={renderItem} />
         </View>
       </Content>
     </Container>
