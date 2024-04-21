@@ -44,7 +44,18 @@
           "color": "#ffffff",
           "mode": "production"
         }
-      ]
+      ],
+      [
+        "react-native-vlc-media-player",
+        {
+            "ios": {
+                "includeVLCKit": false 
+            },
+            "android": {
+                "legacyJetifier": false 
+            }
+        }
+    ]
     ],
     "android": {
       "icon": "./assets/icon.png",

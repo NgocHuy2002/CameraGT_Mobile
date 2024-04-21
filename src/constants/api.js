@@ -1,12 +1,16 @@
 export const API_URL_35 = 'http://10.168.4.231:5035';
 export const API_URL_34 = 'http://10.168.4.231:5034';
 // export const SOCKET_URL = 'wss://truysuat.thinklabs.com.vn';
-
+const host = "192.168.0.101"
 export const API = {
-  LOGIN: 'http://192.168.0.101:5000/api/login',
-  RECORD: 'http://192.168.0.101:5000/api/load_records?username={0}',
-  LOGOUT: 'http://10.168.4.231:5035/connect/endsession',
-  REGISTER: 'http://10.168.4.231:5034/api/user-mobile/register',
+  LOGIN: `http://${host}:5000/api/login`,
+  RECORD: `http://${host}:5000/api/load_records?username={0}`,
+  Notification: `http://${host}:5000/api/notifications/expo?token={0}`,
+  ADDCAMERA: `http://${host}:5000/api/{0}/addcamera`,
+  GETCAMERAS: `http://${host}:5000/api/{0}/getAllcamera`,
+  LIVE: `http://${host}:5000/api/live/{0}/stream.m3u8?ai=true`,
+  LOGOUT: 'http://192.168.1.18:5035/connect/endsession',
+  REGISTER: 'http://192.168.1.18:5000/api/user-mobile/register',
   CHANGE_PASSWORD: 'http://10.168.4.231:5034/api/user-mobile/change-password',
   SEND_OTP_EMAIL: 'http://10.168.4.231:5034/api/user-mobile/send-email-otp',
   VERIFY_OTP_EMAIL: 'http://10.168.4.231:5034/api/user-mobile/verify-email-otp',

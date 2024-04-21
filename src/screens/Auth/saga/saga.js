@@ -76,7 +76,7 @@ export function* userRegister(action) {
 
 export function* userLogout(action) {
   console.log('Logout saga');
-  yield call(requestLogout); // Call to api
+  // yield call(requestLogout); // Call to api
   yield put(userLogoutRoutine.success());
   navigationService.replace(ROUTER.AUTH_NAVIGATOR);
 }
